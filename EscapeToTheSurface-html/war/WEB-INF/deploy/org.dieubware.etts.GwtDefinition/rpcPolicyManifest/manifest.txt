@@ -1,0 +1,2 @@
+# Module org.dieubware.etts.GwtDefinition
+# RPC service class, partial path of RPC policy file
