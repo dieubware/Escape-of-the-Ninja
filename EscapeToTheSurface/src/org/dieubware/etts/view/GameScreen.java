@@ -12,6 +12,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -45,6 +46,7 @@ public class GameScreen implements Screen {
 	private Sound[] jumpSounds = new Sound[4];
 	private Sound hitSound;
 	private Music music;
+	private FPSLogger fps = new FPSLogger();
 	
 	public enum State {
 		WAITING, PLAYING, LOST
@@ -104,7 +106,7 @@ public class GameScreen implements Screen {
 		stage.addActor(lostImage);
 		stage.addActor(hud);
 		music.setLooping(true);
-		music.play();
+		//music.play();
 		
 		
 		Gdx.input.setInputProcessor(stage);
@@ -112,6 +114,7 @@ public class GameScreen implements Screen {
 	
 	@Override
 	public void render(float delta) {
+		fps.log();
 		if(state == State.PLAYING) {
 			timeManager.manage(delta);
 		}

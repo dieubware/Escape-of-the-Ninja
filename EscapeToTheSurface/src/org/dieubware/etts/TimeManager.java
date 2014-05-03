@@ -17,11 +17,7 @@ public class TimeManager {
 		this.screen = screen;
 	}
 	public void manage(float delta) {
-		time += delta;
-		if(time > 0.03) {
-			model.movePlayer(time);
-			time = 0;
-		}
+		model.movePlayer(delta);
 		
 		
 	}
