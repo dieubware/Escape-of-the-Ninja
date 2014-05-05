@@ -19,14 +19,7 @@ public class Constants {
 		outsideBorder = width/2 - width/5;
 		playerSize = 32;
 		switch((int)width) {
-		case 800:
-			insideBorder = 75;
-			outsideBorder = 200;
-
-			velocityX = 60.0f * 6.0f;
-			velocityY = 60.0f * 5.0f;
-			gravity =   60.0f * 6.0f;
-			break;
+		
 		case 240:
 			insideBorder = 30;
 			outsideBorder = 75;
@@ -36,7 +29,42 @@ public class Constants {
 			gravity =   60 * 3f;
 			borderSize = 24;
 			break;
-			
+		case 320:
+			insideBorder = 30;
+			outsideBorder = 75;
+			playerSize = 24;
+			velocityX = 60 * 3.0f;
+			velocityY = 60 * 2.5f;
+			gravity =   60 * 3f;
+			borderSize = 24;
+			break;
+		case 480:
+			insideBorder = 60;
+			outsideBorder = 100;
+			playerSize = 28;
+			velocityX = 60 * 5.0f;
+			velocityY = 60 * 4f;
+			gravity =   60 * 5f;
+			borderSize = 28;
+			break;
+		case 640:
+			insideBorder = 67;
+			outsideBorder = 150;
+			playerSize = 30;
+			velocityX = 60 * 5.5f;
+			velocityY = 60 * 4.5f;
+			gravity =   60 * 5.5f;
+			borderSize = 30;
+			break;
+		default:
+		case 800:
+			insideBorder = 75;
+			outsideBorder = 200;
+
+			velocityX = 60.0f * 6.0f;
+			velocityY = 60.0f * 5.0f;
+			gravity =   60.0f * 6.0f;
+			break;
 		}
 		
 	}

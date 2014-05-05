@@ -120,4 +120,10 @@ public class PlayerActor extends Actor {
 		direction = b;
 	}
 
+
+
+	public boolean getDirection() {
+		return direction;
+	}
+
 }

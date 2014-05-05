@@ -2,7 +2,6 @@ package org.dieubware.etts.controller;
 
 import org.dieubware.etts.Observable;
 import org.dieubware.etts.Observer;
-
 import org.dieubware.etts.GameInterface;
 import org.dieubware.etts.model.GameModel;
 import org.dieubware.etts.model.Player;
@@ -34,6 +33,7 @@ public class ModelObserver implements Observer {
 			gameScreen.getHud().setHighScore(p.getHighscore());
 			gameScreen.getHud().setLost(true);
 			gameScreen.getLostImage().setVisible(true);
+			gameScreen.playDeathAnimation();
 		}
 		else{
 			gameInterface.setTestLevel();

@@ -87,7 +87,7 @@ public class BorderActor extends Actor {
 			if(right) {
 				for(int j = (int)getY(); j < Math.min(getY() + getHeight(), Gdx.graphics.getHeight()); j+= textureSize ) {
 					for(int i = (int)getX()+Constants.borderSize; i < Gdx.graphics.getWidth();i+=textureSize) {
-						batch.draw(text.get(index), i, j);
+						batch.draw(text.get(index), i, j, Constants.textureSize, Constants.textureSize);
 						index++;
 					}
 				}
@@ -95,7 +95,7 @@ public class BorderActor extends Actor {
 			else {
 				for(int j = (int)getY(); j < Math.min(getY() + getHeight(), Gdx.graphics.getHeight()); j+= textureSize ) {
 					for(int i = (int)getX(); i > 0; i-=textureSize) {
-						batch.draw(text.get(index), i-textureSize, j);
+						batch.draw(text.get(index), i-textureSize, j, Constants.textureSize, Constants.textureSize);
 						index++;
 					}
 				}

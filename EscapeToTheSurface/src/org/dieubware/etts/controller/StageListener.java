@@ -58,13 +58,15 @@ public class StageListener extends InputListener{
 			model.jump();
 		}
 		else if(screen.getState() == State.LOST) {
-			screen.getLostImage().setVisible(false);
-			screen.clearBorders();
-			screen.clearItems();
-			model.setLost(false);
-			screen.getPlayerActor().setJumpAnimation();
-			screen.setState(State.PLAYING);
-			model.jump();
+			if(screen.getPlayerActor().getActions().size == 0) {
+				screen.getLostImage().setVisible(false);
+				screen.clearBorders();
+				screen.clearItems();
+				model.setLost(false);
+				screen.getPlayerActor().setJumpAnimation();
+				screen.setState(State.PLAYING);
+				model.jump();
+			}
 		}
 	}
 

@@ -3,6 +3,8 @@ package org.dieubware.etts.view;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.swing.plaf.basic.BasicInternalFrameTitlePane.MoveAction;
+
 import org.dieubware.etts.Constants;
 import org.dieubware.etts.EttsGame;
 import org.dieubware.etts.TimeManager;
@@ -20,8 +22,13 @@ import com.badlogic.gdx.graphics.Texture.TextureWrap;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Interpolation;
+import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import com.badlogic.gdx.scenes.scene2d.actions.MoveByAction;
+import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 
 public class GameScreen implements Screen {
@@ -230,6 +237,21 @@ public class GameScreen implements Screen {
 			items.get(i).remove();
 			items.remove(i);
 		}
+	}
+	
+	public void playDeathAnimation() {
+		float x = 50;
+		if(playerActor.getDirection()) {
+			x = -x;
+		}
+		MoveByAction moveUp = Actions.moveBy(x, 0, 0.1f + 0.002f*playerActor.getY());
+		moveUp.setInterpolation(Interpolation.circleOut);
+		
+		MoveByAction moveDown = Actions.moveBy(0,-(playerActor.getY() + playerActor.getWidth()), 0.1f+0.002f*playerActor.getY());
+		moveDown.setInterpolation(Interpolation.swingIn);
+		Action deathAction = Actions.parallel(moveUp,moveDown);
+		playerActor.addAction(deathAction);
+		
 	}
 	
 	public void setTimeManager(TimeManager tm) {
