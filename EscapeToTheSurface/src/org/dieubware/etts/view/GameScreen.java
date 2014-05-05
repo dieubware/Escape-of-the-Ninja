@@ -53,15 +53,16 @@ public class GameScreen implements Screen {
 	private Sound[] jumpSounds = new Sound[4];
 	private Sound hitSound;
 	private Music music;
+	private boolean isSound = false;
 	private FPSLogger fps = new FPSLogger();
-	
+
 	public enum State {
 		WAITING, PLAYING, LOST
-		
+
 	}
 	private State state = State.WAITING;
 	private HUD hud;
-	
+
 	public GameScreen(EttsGame ettsGame) {
 		stage = new Stage();
 
@@ -80,17 +81,17 @@ public class GameScreen implements Screen {
 		for(int i= 0; i < 4; i++) {
 			tornado[i] = new TextureRegion(itemsTexture, i*32, 0, 32,32);
 			spikes[i] = new TextureRegion(itemsTexture, i*32, 32, 32,32);
-			
+
 		}
-		
+
 		for(int i=1; i < 4; i++) {
 			jumpSounds[i] = Gdx.audio.newSound(Gdx.files.internal("sound/jump"+i+".mp3"));
 		}
 		hitSound = Gdx.audio.newSound(Gdx.files.internal("sound/hit.mp3"));
 		music = Gdx.audio.newMusic(Gdx.files.internal("sound/music.mp3"));
-		
-		
-		
+
+
+
 	}
 
 	@Override
@@ -98,7 +99,7 @@ public class GameScreen implements Screen {
 		stage.addActor(new Background());
 		stage.addActor(borderGroup);
 		stage.addActor(playerActor);
-		
+
 		camera = new OrthographicCamera();
 
 		w = Gdx.graphics.getWidth();
@@ -114,11 +115,11 @@ public class GameScreen implements Screen {
 		stage.addActor(hud);
 		music.setLooping(true);
 		//music.play();
-		
-		
+
+
 		Gdx.input.setInputProcessor(stage);
 	}
-	
+
 	@Override
 	public void render(float delta) {
 		fps.log();
@@ -131,47 +132,47 @@ public class GameScreen implements Screen {
 		stage.act(delta);
 		stage.draw();
 		batch.setProjectionMatrix(camera.combined);
-		
+
 		batch.begin();
 		//for(int i = 0; i < Gdx.graphics.getWidth(); i+=Constants.textureSize) {
-			//for(int j = 0; j < Gdx.graphics.getHeight(); j+=Constants.textureSize) {
-				/*batch.draw(bg, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(),0,
+		//for(int j = 0; j < Gdx.graphics.getHeight(); j+=Constants.textureSize) {
+		/*batch.draw(bg, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(),0,
 						Gdx.graphics.getWidth()/Constants.textureSize,
 						Gdx.graphics.getHeight()/Constants.textureSize, 0);
-				*/
+		 */
 		//batch.draw(bg, 400, 300);
-			//}
-			
+		//}
+
 		//}
 		//if(state == State.WAITING)
-		
+
 		batch.end();
-		
-		
+
+
 	}
 
 	@Override
 	public void resize(int width, int height) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void hide() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void pause() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void resume() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
@@ -185,14 +186,14 @@ public class GameScreen implements Screen {
 		}
 		hitSound.dispose();
 	}
-	
+
 	public void addBorder(int id, float x, float y, float height, boolean right) {
 		BorderActor b = new BorderActor(x, y, height, right, earthTexture);
 		b.setZIndex(1);
 		borderGroup.addActor(b);
 		borders.put(id, b);
 	}
-	
+
 	public void setBorderY(int id, float y) {
 		borders.get(id).setY(y);
 	}
@@ -208,12 +209,12 @@ public class GameScreen implements Screen {
 			borders.get(i).remove();
 			borders.remove(i);
 		}
-		
+
 	}
 	public void setItemY(int id, float y) {
 		items.get(id).setY(y);
 	}
-	
+
 	public void clearItems() {
 		for(Integer i : items.keySet()) {
 			items.get(i).remove();
@@ -227,7 +228,7 @@ public class GameScreen implements Screen {
 			trs = spikes;
 		else
 			trs = tornado;
-		
+
 		ItemActor i = new ItemActor(x, y, width, height, trs);
 		stage.addActor(i);
 		items.put(id, i);
@@ -238,7 +239,7 @@ public class GameScreen implements Screen {
 			items.remove(i);
 		}
 	}
-	
+
 	public void playDeathAnimation() {
 		float x = 50;
 		if(playerActor.getDirection()) {
@@ -246,47 +247,52 @@ public class GameScreen implements Screen {
 		}
 		MoveByAction moveUp = Actions.moveBy(x, 0, 0.1f + 0.002f*playerActor.getY());
 		moveUp.setInterpolation(Interpolation.circleOut);
-		
+
 		MoveByAction moveDown = Actions.moveBy(0,-(playerActor.getY() + playerActor.getWidth()), 0.1f+0.002f*playerActor.getY());
 		moveDown.setInterpolation(Interpolation.swingIn);
 		Action deathAction = Actions.parallel(moveUp,moveDown);
 		playerActor.addAction(deathAction);
-		
+
 	}
-	
+
 	public void setTimeManager(TimeManager tm) {
 		this.timeManager = tm;
 	}
-	
+
 	public void setPlayerPos(float x, float y, boolean b) {
 		playerActor.setX(x);
 		playerActor.setY(y);
 		playerActor.setDirection(b);
 	}
-	
+
 	public void playJumpSound() {
-		int soundId = (int)(Math.random() * 3) +1;
-		jumpSounds[soundId].play();
+		if(isSound) {
+			int soundId = (int)(Math.random() * 3) +1;
+			jumpSounds[soundId].play();
+		}
 	}
-	
+
 	public void playHitSound() {
-		hitSound.play();
+		if(isSound) {
+			hitSound.play();
+		}
 	}
-	
+
 	public void toggleMusic() {
-		if(music.isPlaying()) {
+		if(isSound) {
 			music.pause();
 		}
 		else {
 			music.play();
 		}
+		isSound = !isSound;
 	}
 
 	public Stage getStage() {
 		// TODO Auto-generated method stub
 		return stage;
 	}
-	
+
 	public State getState() {
 		return state;
 	}
@@ -311,7 +317,7 @@ public class GameScreen implements Screen {
 	public PlayerActor getPlayerActor() {
 		return playerActor;
 	}
-	
-	
-	
+
+
+
 }
