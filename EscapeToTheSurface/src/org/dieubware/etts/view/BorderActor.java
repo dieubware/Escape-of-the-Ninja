@@ -45,7 +45,7 @@ public class BorderActor extends Actor {
 		text = new ArrayList<Texture>();
 		if(right) {
 			for(int j = (int)getY(); j < getY() + getHeight(); j+= textureSize ) {
-				for(int i = (int)getX()+Constants.borderSize; i < Gdx.graphics.getWidth();i+=textureSize) {
+				for(int i = (int)(getX()+Constants.borderSize); i < Gdx.graphics.getWidth();i+=textureSize) {
 					text.add(getRandomTexture(earthTextures));
 				}
 
@@ -86,7 +86,7 @@ public class BorderActor extends Actor {
 		if(getY() <= Gdx.graphics.getHeight()) {
 			if(right) {
 				for(int j = (int)getY(); j < Math.min(getY() + getHeight(), Gdx.graphics.getHeight()); j+= textureSize ) {
-					for(int i = (int)getX()+Constants.borderSize; i < Gdx.graphics.getWidth();i+=textureSize) {
+					for(int i = (int)(getX()+Constants.borderSize); i < Gdx.graphics.getWidth();i+=textureSize) {
 						batch.draw(text.get(index), i, j, Constants.textureSize, Constants.textureSize);
 						index++;
 					}

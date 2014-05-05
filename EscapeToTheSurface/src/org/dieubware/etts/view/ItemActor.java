@@ -29,10 +29,11 @@ public class ItemActor extends Actor {
 	private TextureRegion frame;
 	public ItemActor(float x, float y, float width, float height, TextureRegion[] texRegions) {
 		super();
-		setX(x);
-		setY(y);
-		setHeight(height);
-		setWidth(width);
+		setHeight(height*1.25f);
+		setWidth(width*1.25f);
+		setX(x-getWidth()*0.25f);
+		setY(y-getWidth()*0.25f);
+		
 
 		shapeRenderer = new ShapeRenderer();
 		animation = new Animation(0.15f,texRegions);

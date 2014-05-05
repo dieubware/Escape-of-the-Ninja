@@ -213,8 +213,8 @@ public class GameModel extends Observable {
 		items.addItem(
 				screenWidth/2 + (float)Math.random()*50f,
 				lastItemY,
-				Constants.playerSize,
-				Constants.playerSize,
+				Constants.playerSize*0.75f,
+				Constants.playerSize*0.75f,
 				ItemType.random());
 		items.clearOld();
 	}

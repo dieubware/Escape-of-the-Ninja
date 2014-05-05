@@ -4,7 +4,7 @@ public class Constants {
 
 	public static final int textureSize = 32;
 	public static int playerSize;
-	public static int borderSize = 30;
+	public static float borderSize = 30;
 	public static float velocityX;
 	public static float velocityY;
 
@@ -27,7 +27,6 @@ public class Constants {
 			velocityX = 60 * 3.0f;
 			velocityY = 60 * 2.5f;
 			gravity =   60 * 3f;
-			borderSize = 24;
 			break;
 		case 320:
 			insideBorder = 30;
@@ -36,7 +35,6 @@ public class Constants {
 			velocityX = 60 * 3.0f;
 			velocityY = 60 * 2.5f;
 			gravity =   60 * 3f;
-			borderSize = 24;
 			break;
 		case 480:
 			insideBorder = 60;
@@ -45,7 +43,6 @@ public class Constants {
 			velocityX = 60 * 5.0f;
 			velocityY = 60 * 4f;
 			gravity =   60 * 5f;
-			borderSize = 28;
 			break;
 		case 640:
 			insideBorder = 67;
@@ -54,7 +51,6 @@ public class Constants {
 			velocityX = 60 * 5.5f;
 			velocityY = 60 * 4.5f;
 			gravity =   60 * 5.5f;
-			borderSize = 30;
 			break;
 		default:
 		case 800:
@@ -66,6 +62,8 @@ public class Constants {
 			gravity =   60.0f * 6.0f;
 			break;
 		}
+		
+		borderSize = playerSize *1.5f;
 		
 	}
 	
