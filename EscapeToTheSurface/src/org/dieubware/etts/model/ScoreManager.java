@@ -11,20 +11,30 @@ public class ScoreManager extends Observable {
 
 	private int score;
 	private int highscore;
+	private boolean beatenHS = false;
+	private boolean beating= false;
 	
 	public ScoreManager() {
 	}
 	
 	public void addScore(int score) {
 		this.score += score;
-		if(this.score > highscore)
+		if(this.score > highscore) {
+			if(this.highscore != 0 && !beatenHS && !beating) {
+				beatenHS = true;
+				beating = true;
+			}
 			highscore = this.score;
+			
+		}
 		setChanged();
 		notifyObservers();
 	}
 	
 	public void resetScore() {
 		this.score = 0;
+		beating = false;
+		beatenHS = false;
 		setChanged();
 		notifyObservers();
 	}
@@ -36,6 +46,12 @@ public class ScoreManager extends Observable {
 	public int getHighscore() {
 
 		return highscore/Constants.textureSize;
+	}
+	public void setBeatenHS(boolean b) {
+		beatenHS = b;
+	}
+	public boolean isBeatenHS() {
+		return beatenHS;
 	}
 	
 }

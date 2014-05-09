@@ -26,7 +26,10 @@ public class ScoreObserver implements Observer {
 	public void update(Observable o, Object arg1) {
 		ScoreManager p =(ScoreManager)o;
 		gameScreen.getHud().setScore(p.getScore());
-		
+		if(p.isBeatenHS()) {
+			gameScreen.playHighscoreAction();
+			p.setBeatenHS(false);
+		}
 	}
 
 }

@@ -14,11 +14,13 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureWrap;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -30,6 +32,8 @@ import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.actions.MoveByAction;
 import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 
 public class GameScreen implements Screen {
 
@@ -50,6 +54,7 @@ public class GameScreen implements Screen {
 	private TextureRegion[] spikes = new TextureRegion[4];
 	private Texture itemsTexture;
 	private Texture playerTexture;
+	private Label highscoreLabel;
 	private Sound[] jumpSounds = new Sound[4];
 	private Sound hitSound;
 	private Music music;
@@ -116,6 +121,13 @@ public class GameScreen implements Screen {
 		music.setLooping(true);
 		//music.play();
 
+		LabelStyle style = new LabelStyle(new BitmapFont(), Color.WHITE);
+		highscoreLabel = new Label("New Highscore",style);
+		
+		highscoreLabel.setX(w/2 - highscoreLabel.getWidth()/2);
+		highscoreLabel.setY(h - highscoreLabel.getHeight()*2);
+		highscoreLabel.addAction(Actions.alpha(0));
+		stage.addActor(highscoreLabel);
 
 		Gdx.input.setInputProcessor(stage);
 	}
@@ -286,6 +298,31 @@ public class GameScreen implements Screen {
 			music.play();
 		}
 		isSound = !isSound;
+	}
+	
+	public void playHighscoreAction() {
+		System.out.println("NEW HIGHSCORE");
+		highscoreLabel.addAction(Actions.parallel(
+				Actions.fadeIn(0.3f),
+				Actions.sequence(
+						Actions.parallel(
+								Actions.color(Color.RED, 0.5f),
+								Actions.scaleTo(2f, 2f, 0.5f)
+						),
+						Actions.parallel(
+								Actions.color(Color.WHITE, 0.5f),
+								Actions.scaleTo(1f, 1f, 0.5f)
+						),
+						Actions.parallel(
+								Actions.color(Color.RED, 0.5f),
+								Actions.scaleTo(2f, 2f, 0.5f)
+						),
+						Actions.parallel(
+								Actions.color(Color.WHITE, 0.5f),
+								Actions.scaleTo(1f, 1f, 0.5f)
+						),
+						Actions.fadeOut(0.3f)
+				)));
 	}
 
 	public Stage getStage() {
