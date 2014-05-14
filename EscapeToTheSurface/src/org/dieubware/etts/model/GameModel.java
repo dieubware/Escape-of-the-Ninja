@@ -27,9 +27,16 @@ public class GameModel extends Observable {
 	private float playerWidth = Constants.playerSize;
 	private Items items;
 	private float lastItemY;
-
+	private Difficulty difficulty;
+	
+	private float borderSize = Constants.borderSize;
+	
 	private List<Rectangle> bordersRight, bordersLeft;
 
+	public enum Difficulty {
+		NORMAL, HARD, INSANE, EASY
+	}
+	
 	public GameModel(float screenHeight, float screenWidth) {
 
 		player = new Player(0,0,playerWidth,playerWidth);
@@ -39,6 +46,7 @@ public class GameModel extends Observable {
 		this.screenWidth = screenWidth;
 		init();
 		scoreManager = new ScoreManager();
+		setDifficulty(Difficulty.INSANE);
 
 
 	}
@@ -56,7 +64,7 @@ public class GameModel extends Observable {
 
 		float height = 3*Constants.textureSize + (int)((float)Math.random()*12f)*Constants.textureSize -1;
 
-		borders.addBorder(player.x() - 5, lastBorderLeftY, height, false);
+		borders.addBorder(player.x() - 5, lastBorderLeftY,borderSize, height, false);
 		lastBorderLeftY += height;
 
 		while(lastBorderRightY < screenHeight +100) {
@@ -138,7 +146,7 @@ public class GameModel extends Observable {
 		for(Integer i : borders.rightKeySet()) {
 			Rectangle r = borders.get(i);
 			if(player.y() > r.y && player.y() < (r.y + r.height)
-					&& player.x()+playerWidth > r.x + borderWidth) {
+					&& player.x()+playerWidth > r.x + borderSize) {
 
 				return true;
 			}
@@ -193,7 +201,7 @@ public class GameModel extends Observable {
 		float height = 3*Constants.textureSize + (int)((float)Math.random()*12f)*Constants.textureSize -1;
 		borders.addBorder(
 				screenWidth/2 - Constants.insideBorder - (float)Math.random()*Constants.outsideBorder
-				, lastBorderLeftY, height, false);
+				, lastBorderLeftY,borderSize, height, false);
 		lastBorderLeftY += height;
 		borders.clearRight();
 	}
@@ -203,7 +211,7 @@ public class GameModel extends Observable {
 		//float height = 96+Constants.textureSize*(float)Math.random()*12.5f;
 		borders.addBorder(
 				screenWidth/2 + Constants.insideBorder  + (float)Math.random()*Constants.outsideBorder
-				, lastBorderRightY, height, true);
+				, lastBorderRightY,borderSize, height, true);
 		lastBorderRightY += height;
 		borders.clearLeft();
 	}
@@ -231,11 +239,11 @@ public class GameModel extends Observable {
 			velocityX *= -1;
 			if(velocityX> 0) {
 				player.setDirection(true);
-				velocityX = Constants.velocityX-Constants.velocityX*(dist/Constants.borderSize);
+				velocityX = Constants.velocityX-Constants.velocityX*(dist/borderSize);
 			}
 			else {
 				player.setDirection(false);
-				velocityX = (Constants.velocityX-Constants.velocityX*(dist/Constants.borderSize))*(-1);
+				velocityX = (Constants.velocityX-Constants.velocityX*(dist/borderSize))*(-1);
 			}
 			flap = true;
 		}
@@ -258,7 +266,7 @@ public class GameModel extends Observable {
 		}
 		for(Integer i : borders.rightKeySet()) {
 			if(Intersector.overlaps(borders.get(i), player.getR())) {
-				return (borders.get(i).x + Constants.borderSize) - (player.x()+playerWidth) ;
+				return (borders.get(i).x + borders.get(i).width) - (player.x()+playerWidth) ;
 			}
 		}
 		return 0;
@@ -283,7 +291,7 @@ public class GameModel extends Observable {
 	}
 
 	public void addBorder(int x, int y, int height, boolean right) {
-		borders.addBorder(x, y, height, right);
+		borders.addBorder(x, y, borderSize,height, right);
 	}
 
 	public boolean isLost() {
@@ -296,6 +304,24 @@ public class GameModel extends Observable {
 		notifyObservers();
 	}
 
+	public void setDifficulty(Difficulty d) {
+		this.difficulty = d;
+		switch(d) {
+			case EASY :
+				borderSize = 2f*Constants.borderSize;
+				break;
+			case NORMAL:
+				borderSize = 1.5f*Constants.borderSize;
+				break;
+			case HARD:
+				borderSize = Constants.borderSize;
+				break;
+			case INSANE:
+				borderSize = .5f*Constants.borderSize;
+				break;
+		}
+	}
+	
 	public int getScore() {
 		return scoreManager.getScore();
 	}
@@ -314,6 +340,12 @@ public class GameModel extends Observable {
 
 	public int getHighscore() {
 		return scoreManager.getHighscore();
+	}
+
+	public void saveScore() {
+		if(scoreManager.isBeating()) {
+			SaveManager.saveScore(scoreManager.getRawHighscore());
+		}
 	}
 
 }

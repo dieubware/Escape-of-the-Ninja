@@ -27,6 +27,7 @@ public class ModelObserver implements Observer {
 	public void update(Observable o, Object arg1) {
 		GameModel p =(GameModel)o;
 		if(p.isLost()) {
+			p.saveScore();
 			gameScreen.playHitSound();
 			gameScreen.setState(State.LOST);
 			gameScreen.getPlayerActor().setIddleAnimation();

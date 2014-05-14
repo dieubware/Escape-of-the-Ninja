@@ -63,7 +63,7 @@ public class Constants {
 			break;
 		}
 		
-		borderSize = playerSize *1.5f;
+		borderSize = playerSize;
 		
 	}
 	

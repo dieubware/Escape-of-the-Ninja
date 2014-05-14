@@ -15,6 +15,7 @@ public class ScoreManager extends Observable {
 	private boolean beating= false;
 	
 	public ScoreManager() {
+		highscore = SaveManager.loadScore();
 	}
 	
 	public void addScore(int score) {
@@ -31,7 +32,11 @@ public class ScoreManager extends Observable {
 		notifyObservers();
 	}
 	
+	
+	
 	public void resetScore() {
+		
+		
 		this.score = 0;
 		beating = false;
 		beatenHS = false;
@@ -47,11 +52,18 @@ public class ScoreManager extends Observable {
 
 		return highscore/Constants.textureSize;
 	}
+	public int getRawHighscore() {
+
+		return highscore;
+	}
 	public void setBeatenHS(boolean b) {
 		beatenHS = b;
 	}
 	public boolean isBeatenHS() {
 		return beatenHS;
+	}
+	public boolean isBeating() {
+		return beating;
 	}
 	
 }

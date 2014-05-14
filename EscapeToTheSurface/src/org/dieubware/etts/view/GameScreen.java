@@ -49,12 +49,13 @@ public class GameScreen implements Screen {
 	private Group borderGroup;
 	private Image tapToStart, lostImage;
 	private Texture bg;
-	private Texture[] earthTexture;
+	private Texture bordersTexture;
+	private TextureRegion[] earthTexture;
 	private TextureRegion[] tornado = new TextureRegion[4];
 	private TextureRegion[] spikes = new TextureRegion[4];
 	private Texture itemsTexture;
 	private Texture playerTexture;
-	private Label highscoreLabel;
+	private Image highscoreImage;
 	private Sound[] jumpSounds = new Sound[4];
 	private Sound hitSound;
 	private Music music;
@@ -78,9 +79,10 @@ public class GameScreen implements Screen {
 		playerActor.setZIndex(200);
 		borders = new HashMap<Integer, BorderActor>();
 		items = new HashMap<Integer, ItemActor>();
-		earthTexture = new Texture[6];
+		earthTexture = new TextureRegion[6];
+		bordersTexture = new Texture(Gdx.files.internal("borders.png"));
 		for(int i = 0; i < earthTexture.length; i++) {
-			earthTexture[i] = new Texture(Gdx.files.internal("earth" + i + ".png"));
+			earthTexture[i] = new TextureRegion(bordersTexture, i*32, 0, 32, 32);
 		}
 		itemsTexture = new Texture(Gdx.files.internal("items.png"));
 		for(int i= 0; i < 4; i++) {
@@ -122,12 +124,13 @@ public class GameScreen implements Screen {
 		//music.play();
 
 		LabelStyle style = new LabelStyle(new BitmapFont(), Color.WHITE);
-		highscoreLabel = new Label("New Highscore",style);
+		highscoreImage = new Image(new Texture(Gdx.files.internal("highscore.png")));
 		
-		highscoreLabel.setX(w/2 - highscoreLabel.getWidth()/2);
-		highscoreLabel.setY(h - highscoreLabel.getHeight()*2);
-		highscoreLabel.addAction(Actions.alpha(0));
-		stage.addActor(highscoreLabel);
+		highscoreImage.setX(w/2 - highscoreImage.getWidth()/2);
+		highscoreImage.setY(h - highscoreImage.getHeight()*2);
+		highscoreImage.setOrigin(highscoreImage.getWidth()/2, highscoreImage.getHeight()/2);
+		highscoreImage.addAction(Actions.alpha(0));
+		stage.addActor(highscoreImage);
 
 		Gdx.input.setInputProcessor(stage);
 	}
@@ -189,9 +192,7 @@ public class GameScreen implements Screen {
 
 	@Override
 	public void dispose() {
-		for(int i = 0; i < earthTexture.length; i++) {
-			earthTexture[i].dispose();
-		}
+		bordersTexture.dispose();
 		playerTexture.dispose();
 		for(int i=1; i < 4; i++) {
 			jumpSounds[i].dispose();
@@ -199,8 +200,8 @@ public class GameScreen implements Screen {
 		hitSound.dispose();
 	}
 
-	public void addBorder(int id, float x, float y, float height, boolean right) {
-		BorderActor b = new BorderActor(x, y, height, right, earthTexture);
+	public void addBorder(int id, float x, float y,float width, float height, boolean right) {
+		BorderActor b = new BorderActor(x, y, width,height, right, earthTexture);
 		b.setZIndex(1);
 		borderGroup.addActor(b);
 		borders.put(id, b);
@@ -302,7 +303,7 @@ public class GameScreen implements Screen {
 	
 	public void playHighscoreAction() {
 		System.out.println("NEW HIGHSCORE");
-		highscoreLabel.addAction(Actions.parallel(
+		highscoreImage.addAction(Actions.parallel(
 				Actions.fadeIn(0.3f),
 				Actions.sequence(
 						Actions.parallel(
@@ -319,9 +320,10 @@ public class GameScreen implements Screen {
 						),
 						Actions.parallel(
 								Actions.color(Color.WHITE, 0.5f),
-								Actions.scaleTo(1f, 1f, 0.5f)
-						),
-						Actions.fadeOut(0.3f)
+								Actions.scaleTo(1f, 1f, 0.5f),
+								Actions.fadeOut(0.5f)
+						)
+						
 				)));
 	}
 

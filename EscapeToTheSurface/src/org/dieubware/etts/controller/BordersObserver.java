@@ -28,7 +28,7 @@ public class BordersObserver implements Observer {
 		if(lastId != borders.getLastBorderId()) {
 			lastId = borders.getLastBorderId();
 			Rectangle r = borders.getLastBorder();
-			gameScreen.addBorder(lastId, r.x, r.y, r.height, borders.getLastBorderSide());
+			gameScreen.addBorder(lastId, r.x, r.y, r.width,r.height, borders.getLastBorderSide());
 		}
 		if(lastRemoved != borders.getLastRemovedId()) {
 			lastRemoved = borders.getLastRemovedId();

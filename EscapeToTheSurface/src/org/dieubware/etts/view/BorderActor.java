@@ -18,19 +18,20 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 public class BorderActor extends Actor {
 
 	private ShapeRenderer shapeRenderer;
-	private List<Texture> text;
+	private List<TextureRegion> text;
 	private boolean right;
 	private Color color1, color2;
 
 
 	private float textureSize = Constants.textureSize;
-	public BorderActor(float x, float y, float height, boolean right, Texture[] earthTextures) {
+	public BorderActor(float x, float y,float width, float height, boolean right, TextureRegion[] earthTexture) {
 		super();
 		setX(x);
 		setY(y);
 		setHeight(height);
+		setWidth(width);
 
-		setTextures(earthTextures);
+		setTextures(earthTexture);
 		shapeRenderer = new ShapeRenderer();
 		this.right = right;
 		color1 = new Color(0.4f, 0.105f, 0.058f, 0.8f);
@@ -40,9 +41,9 @@ public class BorderActor extends Actor {
 		setColor(Color.ORANGE);
 	}
 
-	public void setTextures(Texture[] earthTextures) {
+	public void setTextures(TextureRegion[] earthTextures) {
 
-		text = new ArrayList<Texture>();
+		text = new ArrayList<TextureRegion>();
 		if(right) {
 			for(int j = (int)getY(); j < getY() + getHeight(); j+= textureSize ) {
 				for(int i = (int)(getX()+Constants.borderSize); i < Gdx.graphics.getWidth();i+=textureSize) {
@@ -61,7 +62,7 @@ public class BorderActor extends Actor {
 
 	}
 
-	public Texture getRandomTexture(Texture[] earthTextures) {
+	public TextureRegion getRandomTexture(TextureRegion[] earthTextures) {
 
 		int textureIndex = (int)(Math.random()*82.0);
 		if(textureIndex < 80) {
@@ -86,7 +87,7 @@ public class BorderActor extends Actor {
 		if(getY() <= Gdx.graphics.getHeight()) {
 			if(right) {
 				for(int j = (int)getY(); j < Math.min(getY() + getHeight(), Gdx.graphics.getHeight()); j+= textureSize ) {
-					for(int i = (int)(getX()+Constants.borderSize); i < Gdx.graphics.getWidth();i+=textureSize) {
+					for(int i = (int)(getX()+getWidth()); i < Gdx.graphics.getWidth();i+=textureSize) {
 						batch.draw(text.get(index), i, j, Constants.textureSize, Constants.textureSize);
 						index++;
 					}
@@ -108,10 +109,10 @@ public class BorderActor extends Actor {
 			shapeRenderer.begin(ShapeType.Filled);
 			shapeRenderer.setColor(getColor());
 			if(right) {
-				shapeRenderer.rect(getX(), getY(), Constants.borderSize,getHeight(), color2, color1, color1, color2);
+				shapeRenderer.rect(getX(), getY(), getWidth(),getHeight(), color2, color1, color1, color2);
 			}
 			else {
-				shapeRenderer.rect(getX(), getY(), Constants.borderSize,getHeight(), color1, color2, color2, color1);
+				shapeRenderer.rect(getX(), getY(), getWidth(),getHeight(), color1, color2, color2, color1);
 			}
 			shapeRenderer.end();
 			Gdx.gl.glDisable(GL10.GL_BLEND);

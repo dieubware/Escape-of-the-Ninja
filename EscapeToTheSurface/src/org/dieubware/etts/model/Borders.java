@@ -24,8 +24,8 @@ public class Borders extends Observable {
 		leftRectangles =  new HashMap<Integer, Rectangle>();
 	}
 
-	public void addBorder(float x, float y, float height, boolean right) {
-		Rectangle r = new Rectangle(x,y,Constants.borderSize, height);
+	public void addBorder(float x, float y, float width,float height, boolean right) {
+		Rectangle r = new Rectangle(x,y,width, height);
 		int id = ID++;
 		if(!right) {
 			id = -id;
